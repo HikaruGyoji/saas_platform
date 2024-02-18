@@ -34,7 +34,9 @@ const CreditItem: React.FC<CreditItemProps> = ({ plan, user }) => {
           {lang === 'en' ? plan.nameEn : plan.nameJa}
         </p>
         <p className='h1-semibold text-dark-600'>${plan.price}</p>
-        <p className='p-16-regular'>{plan.credits} Credits</p>
+        <p className='p-16-regular'>
+          {plan.credits} {lang === 'en' ? 'Credits' : 'クレジット'}
+        </p>
       </div>
 
       {/* Inclusions */}
