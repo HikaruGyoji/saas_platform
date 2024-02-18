@@ -24,7 +24,7 @@ const CreditComponent = async () => {
       <section>
         <ul className='credits-list'>
           {plans.map((plan) => (
-            <CreditItem key={plan.name} plan={plan} user={user} />
+            <CreditItem key={plan._id} plan={plan} user={user} />
           ))}
         </ul>
       </section>
