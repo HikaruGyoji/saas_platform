@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { CldImage } from 'next-cloudinary';
 
@@ -18,6 +17,7 @@ import { formUrlQuery } from '@/lib/utils';
 import { Button } from '../ui/button';
 
 import { Search } from './Search';
+import { LangLink } from './UseLangLink';
 
 export const Collection = ({
   hasSearch = false,
@@ -97,7 +97,10 @@ export const Collection = ({
 const Card = ({ image }: { image: IImage }) => {
   return (
     <li>
-      <Link href={`/transformations/${image._id}`} className='collection-card'>
+      <LangLink
+        href={`/transformations/${image._id}`}
+        className='collection-card'
+      >
         <CldImage
           src={image.publicId}
           alt={image.title}
@@ -123,7 +126,7 @@ const Card = ({ image }: { image: IImage }) => {
             height={24}
           />
         </div>
-      </Link>
+      </LangLink>
     </li>
   );
 };

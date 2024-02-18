@@ -2,24 +2,48 @@
 import { navLinks } from '@/constants';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { Button } from '../ui/button';
 
+// ページ共通
+import { useTranslation } from '@/hooks/i18n/useTranslation';
+import { useLang } from '@/hooks/lang/useLang';
+import { setMetadata } from '@/utils/setMetadata';
+import { LangLink } from '@/components/shared/UseLangLink';
+
+// ページ固有
+import { topTranslation as translation } from '@/_translations/index';
+
+// metaの設定
+export const generateMetadata = setMetadata(translation);
+
 function Sidebar() {
   const pathname = usePathname();
+  const lang = useLang(); // `ja` or `en`
+  const { t } = useTranslation({ lang, translation });
+  const handleLanguageSwitch = () => {
+    const currentUrl = window.location.href;
+    const origin = window.location.origin;
+    const newLang = lang === 'en' ? '/ja/' : '/en/';
+    const newUrl = origin + newLang + currentUrl.substring(origin.length + 3);
+    window.location.href = newUrl;
+  };
+
   return (
     <aside className='sidebar'>
       <div className='flex size-full flex-col gap-4'>
-        <Link href='/' className='sidebar-logo'>
+        <Button onClick={handleLanguageSwitch}>
+          {lang === 'en' ? '日本語' : 'English'}
+        </Button>
+        <LangLink href='/' className='sidebar-logo'>
           <Image
             src='/assets/images/logo-text.svg'
             alt='logo'
             width={180}
             height={28}
           />
-        </Link>
+        </LangLink>
 
         <nav className='sidebar-nav'>
           <SignedIn>
@@ -36,7 +60,7 @@ function Sidebar() {
                         : 'text-gray-700'
                     }`}
                   >
-                    <Link className='sidebar-link' href={link.route}>
+                    <LangLink className='sidebar-link' href={link.route}>
                       <Image
                         src={link.icon}
                         alt='logo'
@@ -44,8 +68,8 @@ function Sidebar() {
                         height={24}
                         className={`${isActive && 'brightness-200'}`}
                       />
-                      {link.label}
-                    </Link>
+                      {lang === 'en' ? link.labelEn : link.labelJa}
+                    </LangLink>
                   </li>
                 );
               })}
@@ -63,7 +87,7 @@ function Sidebar() {
                         : 'text-gray-700'
                     }`}
                   >
-                    <Link className='sidebar-link' href={link.route}>
+                    <LangLink className='sidebar-link' href={link.route}>
                       <Image
                         src={link.icon}
                         alt='logo'
@@ -71,8 +95,8 @@ function Sidebar() {
                         height={24}
                         className={`${isActive && 'brightness-200'}`}
                       />
-                      {link.label}
-                    </Link>
+                      {lang === 'en' ? link.labelEn : link.labelJa}
+                    </LangLink>
                   </li>
                 );
               })}
@@ -85,7 +109,7 @@ function Sidebar() {
 
           <SignedOut>
             <Button asChild className='button bg-purple-gradient bg-cover'>
-              <Link href='/sign-in'>Login</Link>
+              <LangLink href='/sign-in'>Login</LangLink>
             </Button>
           </SignedOut>
         </nav>

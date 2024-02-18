@@ -1,25 +1,39 @@
 'use client';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { navLinks } from '@/constants';
 import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
+import { LangLink } from './UseLangLink';
+
+// ページ共通
+import { useTranslation } from '@/hooks/i18n/useTranslation';
+import { useLang } from '@/hooks/lang/useLang';
+import { setMetadata } from '@/utils/setMetadata';
+
+// ページ固有
+import { topTranslation as translation } from '@/_translations/index';
+
+// metaの設定
+export const generateMetadata = setMetadata(translation);
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const lang = useLang(); // `ja` or `en`
+  const { t } = useTranslation({ lang, translation });
+
   return (
     <header className='header'>
-      <Link href='/' className='flex items-center gap-2 md:py-2'>
+      <LangLink href='/' className='flex items-center gap-2 md:py-2'>
         <Image
           src='/assets/images/logo-text.svg'
           alt='logo'
           width={180}
           height={28}
         />
-      </Link>
+      </LangLink>
 
       <nav className='flex gap-2'>
         <SignedIn>
@@ -54,7 +68,7 @@ const MobileNav = () => {
                           isActive && 'gradient-text'
                         } p-18 flex whitespace-nowrap text-dark-700`}
                       >
-                        <Link
+                        <LangLink
                           className='sidebar-link cursor-pointer'
                           href={link.route}
                         >
@@ -64,8 +78,8 @@ const MobileNav = () => {
                             width={24}
                             height={24}
                           />
-                          {link.label}
-                        </Link>
+                          {lang === 'en' ? link.labelEn : link.labelJa}{' '}
+                        </LangLink>
                       </li>
                     );
                   })}
@@ -77,7 +91,7 @@ const MobileNav = () => {
 
         <SignedOut>
           <Button asChild className='button bg-purple-gradient bg-cover'>
-            <Link href='/sign-in'>Login</Link>
+            <LangLink href='/sign-in'>Login</LangLink>
           </Button>
         </SignedOut>
       </nav>
