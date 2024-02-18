@@ -1,10 +1,12 @@
 'use client';
 
+import { useLang } from '@/hooks/lang/useLang';
 import { dataUrl, debounce, download, getImageSize } from '@/lib/utils';
 import { CldImage, getCldImageUrl } from 'next-cloudinary';
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 import React from 'react';
+import TransformedLangH3 from '../pages/TransformedLangH3';
 
 const TransformedImage = ({
   image,
@@ -31,10 +33,12 @@ const TransformedImage = ({
     );
   };
 
+  const lang = useLang(); // `ja` or `en`
+
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex-between'>
-        <h3 className='h3-bold text-dark-600'>Transformed</h3>
+        <TransformedLangH3 />
 
         {hasDownload && (
           <button className='download-btn' onClick={downloadHandler}>
@@ -83,7 +87,9 @@ const TransformedImage = ({
           )}
         </div>
       ) : (
-        <div className='transformed-placeholder'>Transformed Image</div>
+        <div className='transformed-placeholder'>
+          {lang === 'en' ? 'Transformed Image' : '変換後の画像'}
+        </div>
       )}
     </div>
   );

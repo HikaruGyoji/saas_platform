@@ -39,6 +39,7 @@ import { getCldImageUrl } from 'next-cloudinary';
 import { addImage, updateImage } from '@/lib/actions/image.actions';
 import { useRouter } from 'next/navigation';
 import { InsufficientCreditsModal } from './InsufficientCreditsModal';
+import { useLang } from '@/hooks/lang/useLang';
 
 export const formSchema = z.object({
   title: z.string(),
@@ -207,6 +208,8 @@ const TransformationForm = ({
     }
   }, [image, transformationType.config, type]);
 
+  const lang = useLang(); // `ja` or `en`
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -214,7 +217,7 @@ const TransformationForm = ({
         <CustomField
           control={form.control}
           name='title'
-          formLabel='Image Title'
+          formLabel={lang === 'en' ? 'Image Title' : '画像タイトル'}
           className='w-full'
           render={({ field }) => <Input {...field} className='input-field' />}
         />
@@ -223,7 +226,7 @@ const TransformationForm = ({
           <CustomField
             control={form.control}
             name='aspectRatio'
-            formLabel='Aspect Ratio'
+            formLabel={lang === 'en' ? 'Aspect Ratio' : 'アスペクト比'}
             className='w-full'
             render={({ field }) => (
               <Select
@@ -233,12 +236,16 @@ const TransformationForm = ({
                 value={field.value}
               >
                 <SelectTrigger className='select-field'>
-                  <SelectValue placeholder='Select size' />
+                  <SelectValue
+                    placeholder={lang === 'en' ? 'Select size' : 'サイズの選択'}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {Object.keys(aspectRatioOptions).map((key) => (
                     <SelectItem key={key} value={key} className='select-item'>
-                      {aspectRatioOptions[key as AspectRatioKey].label}
+                      {lang === 'en'
+                        ? aspectRatioOptions[key as AspectRatioKey].labelEn
+                        : aspectRatioOptions[key as AspectRatioKey].labelJa}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -253,7 +260,13 @@ const TransformationForm = ({
               control={form.control}
               name='prompt'
               formLabel={
-                type === 'remove' ? 'Object to remove' : 'Object to recolor'
+                type === 'remove'
+                  ? lang === 'en'
+                    ? 'Object to remove'
+                    : 'オブジェクトの削除'
+                  : lang === 'en'
+                  ? 'Object to recolor'
+                  : 'オブジェクトの色を変更'
               }
               className='w-full'
               render={({ field }) => (
@@ -276,7 +289,7 @@ const TransformationForm = ({
               <CustomField
                 control={form.control}
                 name='color'
-                formLabel='Replacement Color'
+                formLabel={lang === 'en' ? 'Replacement Color' : '置換色'}
                 className='w-full'
                 render={({ field }) => (
                   <Input
@@ -330,14 +343,26 @@ const TransformationForm = ({
             disabled={isTransforming || newTransformation === null}
             onClick={onTransformHandler}
           >
-            {isTransforming ? 'Transforming...' : 'Apply Transformation'}
+            {isTransforming
+              ? lang === 'en'
+                ? 'Transforming...'
+                : '変換中...'
+              : lang === 'en'
+              ? 'Apply Transformation'
+              : '変換を適用'}
           </Button>
           <Button
             type='submit'
             className='submit-button capitalize'
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Save Image'}
+            {isTransforming
+              ? lang === 'en'
+                ? 'Submitting...'
+                : '送信中...'
+              : lang === 'en'
+              ? 'Save Image'
+              : '画像を保存'}
           </Button>
         </div>
       </form>

@@ -8,6 +8,7 @@ import { getImageById } from '@/lib/actions/image.actions';
 import { getImageSize } from '@/lib/utils';
 import { DeleteConfirmation } from '@/components/shared/DeleteConfirmation';
 import { LangLink } from '@/components/shared/UseLangLink';
+import OriginalLangH3 from '@/components/pages/OriginalLangH3';
 
 const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
   const { userId } = auth();
@@ -61,7 +62,7 @@ const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
         <div className='transformation-grid'>
           {/* MEDIA UPLOADER */}
           <div className='flex flex-col gap-4'>
-            <h3 className='h3-bold text-dark-600'>Original</h3>
+            <OriginalLangH3 />
 
             <Image
               width={getImageSize(image.transformationType, image, 'width')}

@@ -17,7 +17,7 @@ const AddTransformationTypePage = async ({
   const user = await getUserById(userId);
   return (
     <>
-      <Header title={transformation.title} subtitle={transformation.subTitle} />
+      <Header type={type} />
 
       <TransformationForm
         action='Add'

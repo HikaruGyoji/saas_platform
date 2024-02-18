@@ -23,7 +23,7 @@ const MobileNav = () => {
   const pathname = usePathname();
   const lang = useLang(); // `ja` or `en`
   const { t } = useTranslation({ lang, translation });
-  const currentUrl = window.location.href;
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   const handleLanguageSwitch = (newLang: string) => {
     if (newLang !== lang) {
       const newUrl = `${origin}/${newLang}${currentUrl.substring(

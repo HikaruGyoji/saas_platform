@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { checkoutCredits } from '@/lib/actions/transaction.action';
 
 import { Button } from '../ui/button';
+import { useLang } from '@/hooks/lang/useLang';
 
 const Checkout = ({
   plan,
@@ -58,16 +59,24 @@ const Checkout = ({
     await checkoutCredits(transaction);
   };
 
+  const lang = useLang(); // `ja` or `en`
+
   return (
     <form action={onCheckout} method='POST'>
       <section>
-        <Button
-          type='submit'
-          role='link'
-          className='w-full rounded-full bg-purple-gradient bg-cover'
-        >
-          Buy Credit
-        </Button>
+        {plan === 'Free' || plan === '無料版' ? (
+          <Button variant='outline' className='credits-btn' disabled>
+            {lang === 'en' ? 'Free Consumable' : '無料版'}
+          </Button>
+        ) : (
+          <Button
+            type='submit'
+            role='link'
+            className='w-full rounded-full bg-purple-gradient bg-cover'
+          >
+            {lang === 'en' ? 'Buy Credit' : 'クレジットを購入'}
+          </Button>
+        )}
       </section>
     </form>
   );
