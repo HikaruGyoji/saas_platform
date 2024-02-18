@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { formUrlQuery, removeKeysFromQuery } from '@/lib/utils';
+import { useLang } from '@/hooks/lang/useLang';
 
 export const Search = () => {
   const router = useRouter();
@@ -35,6 +36,8 @@ export const Search = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [router, searchParams, query]);
 
+  const lang = useLang(); // `ja` or `en`
+
   return (
     <div className='search'>
       <Image
@@ -46,7 +49,7 @@ export const Search = () => {
 
       <Input
         className='search-field'
-        placeholder='Search'
+        placeholder={lang === 'en' ? 'Search' : '検索'}
         onChange={(e) => setQuery(e.target.value)}
       />
     </div>

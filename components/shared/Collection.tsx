@@ -18,6 +18,7 @@ import { Button } from '../ui/button';
 
 import { Search } from './Search';
 import { LangLink } from './UseLangLink';
+import { useLang } from '@/hooks/lang/useLang';
 
 export const Collection = ({
   hasSearch = false,
@@ -45,11 +46,14 @@ export const Collection = ({
 
     router.push(newUrl, { scroll: false });
   };
+  const lang = useLang(); // `ja` or `en`
 
   return (
     <>
       <div className='collection-heading'>
-        <h2 className='h2-bold text-dark-600'>Recent Edits</h2>
+        <h2 className='h2-bold text-dark-600'>
+          {lang === 'en' ? 'Recent Edits' : '最近の編集'}
+        </h2>
         {hasSearch && <Search />}
       </div>
 
@@ -61,7 +65,9 @@ export const Collection = ({
         </ul>
       ) : (
         <div className='collection-empty'>
-          <p className='p-20-semibold'>Empty List</p>
+          <p className='p-20-semibold'>
+            {lang === 'en' ? 'Empty List' : '空のリスト'}
+          </p>
         </div>
       )}
 
