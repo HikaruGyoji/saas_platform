@@ -22,28 +22,49 @@ function Sidebar() {
   const pathname = usePathname();
   const lang = useLang(); // `ja` or `en`
   const { t } = useTranslation({ lang, translation });
-  const handleLanguageSwitch = () => {
-    const currentUrl = window.location.href;
-    const origin = window.location.origin;
-    const newLang = lang === 'en' ? '/ja/' : '/en/';
-    const newUrl = origin + newLang + currentUrl.substring(origin.length + 3);
-    window.location.href = newUrl;
+  const currentUrl = window.location.href;
+  const handleLanguageSwitch = (newLang: string) => {
+    if (newLang !== lang) {
+      const newUrl = `${origin}/${newLang}${currentUrl.substring(
+        origin.length + 3
+      )}`;
+      window.location.href = newUrl;
+    }
   };
 
   return (
     <aside className='sidebar'>
       <div className='flex size-full flex-col gap-4'>
-        <Button onClick={handleLanguageSwitch}>
-          {lang === 'en' ? '日本語' : 'English'}
-        </Button>
-        <LangLink href='/' className='sidebar-logo'>
-          <Image
-            src='/assets/images/logo-text.svg'
-            alt='logo'
-            width={180}
-            height={28}
-          />
-        </LangLink>
+        <div className='flex gap-1'>
+          <LangLink href='/' className='sidebar-logo'>
+            <Image
+              src='/assets/images/logo-text.svg'
+              alt='logo'
+              width={180}
+              height={28}
+            />
+          </LangLink>
+          <div className='flex flex-center'>
+            <Button
+              onClick={() => handleLanguageSwitch('en')}
+              className={`mr-1 px-[4px] h-6 rounded-2xl ${
+                lang === 'en' ? '' : 'disabled'
+              }`}
+              style={{ opacity: lang === 'en' ? 1 : 0.5 }}
+            >
+              en
+            </Button>
+            <Button
+              onClick={() => handleLanguageSwitch('ja')}
+              className={`px-[6px] h-6 rounded-2xl ${
+                lang === 'ja' ? '' : 'disabled'
+              }`}
+              style={{ opacity: lang === 'ja' ? 1 : 0.5 }}
+            >
+              ja
+            </Button>
+          </div>
+        </div>
 
         <nav className='sidebar-nav'>
           <SignedIn>

@@ -23,6 +23,15 @@ const MobileNav = () => {
   const pathname = usePathname();
   const lang = useLang(); // `ja` or `en`
   const { t } = useTranslation({ lang, translation });
+  const currentUrl = window.location.href;
+  const handleLanguageSwitch = (newLang: string) => {
+    if (newLang !== lang) {
+      const newUrl = `${origin}/${newLang}${currentUrl.substring(
+        origin.length + 3
+      )}`;
+      window.location.href = newUrl;
+    }
+  };
 
   return (
     <header className='header'>
@@ -51,12 +60,34 @@ const MobileNav = () => {
             </SheetTrigger>
             <SheetContent className='sheet-content sm:w-64'>
               <>
-                <Image
-                  src='/assets/images/logo-text.svg'
-                  alt='logo'
-                  width={152}
-                  height={23}
-                />
+                <div className='flex gap-1'>
+                  <Image
+                    src='/assets/images/logo-text.svg'
+                    alt='logo'
+                    width={152}
+                    height={23}
+                  />
+                  <div className='flex flex-center'>
+                    <Button
+                      onClick={() => handleLanguageSwitch('en')}
+                      className={`mr-1 px-[4px] h-6 rounded-2xl ${
+                        lang === 'en' ? '' : 'disabled'
+                      }`}
+                      style={{ opacity: lang === 'en' ? 1 : 0.5 }}
+                    >
+                      en
+                    </Button>
+                    <Button
+                      onClick={() => handleLanguageSwitch('ja')}
+                      className={`px-[6px] h-6 rounded-2xl ${
+                        lang === 'ja' ? '' : 'disabled'
+                      }`}
+                      style={{ opacity: lang === 'ja' ? 1 : 0.5 }}
+                    >
+                      ja
+                    </Button>
+                  </div>
+                </div>
                 <ul className='header-nav_elements'>
                   {navLinks.map((link) => {
                     const isActive = link.route === pathname;
