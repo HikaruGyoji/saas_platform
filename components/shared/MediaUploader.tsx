@@ -1,12 +1,10 @@
 'use client';
 
 import { useToast } from '@/components/ui/use-toast';
-import { useLang } from '@/hooks/lang/useLang';
 import { dataUrl, getImageSize } from '@/lib/utils';
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
-import OriginalLangH3 from '../pages/OriginalLangH3';
 
 type MediaUploaderProps = {
   onValueChange: (value: string) => void;
@@ -53,11 +51,9 @@ const MediaUploader = ({
     });
   };
 
-  const lang = useLang(); // `ja` or `en`
-
   return (
     <CldUploadWidget
-      uploadPreset='jsm_imaginify'
+      uploadPreset='imaginify'
       options={{
         multiple: false,
         resourceType: 'image',
@@ -67,7 +63,7 @@ const MediaUploader = ({
     >
       {({ open }) => (
         <div className='flex flex-col gap-4'>
-          <OriginalLangH3 />
+          <h3 className='h3-bold text-dark-600'>Original</h3>
 
           {publicId ? (
             <>
@@ -93,11 +89,7 @@ const MediaUploader = ({
                   height={24}
                 />
               </div>
-              <p className='p-14-medium'>
-                {lang === 'en'
-                  ? 'Click here to upload image'
-                  : '画像をアップロードするにはここをクリック'}
-              </p>
+              <p className='p-14-medium'>Click here to upload image</p>
             </div>
           )}
         </div>
